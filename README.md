@@ -1,5 +1,22 @@
 # ZLog
 
+### Integration
+
+Add it in your root build.gradle at the end of repositories:
+```
+allprojects {
+    repositories {
+        maven { url "https://jitpack.io" }
+    }
+}
+```
+
+```
+dependencies {
+    compile 'com.github.z-chu:ZLog:1.1'
+}
+```
+
 ##License
 
 ```
