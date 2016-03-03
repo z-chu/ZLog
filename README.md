@@ -1,4 +1,5 @@
-# ZLog
+### ZLog
+一个AndroidStudio专用的LogCat工具，主要功能为打印行号、函数调用、Json解析、XML解析、点击跳转、Log信息保存等功能。参考自Logger、KLog
 
 ### Integration
 
