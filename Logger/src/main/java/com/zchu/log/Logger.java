@@ -60,7 +60,7 @@ public final class Logger {
     }
 
     public static void e(Object message) {
-        printer.e(null, message);
+        printer.e(message);
     }
 
     public static void eJson(String json) {
