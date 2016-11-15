@@ -13,7 +13,7 @@
 * 去掉一些几乎不会用功能和函数（如：可变长度参数、没有用的Array操作函数）
 
 ### Integration
-**Step 1. **Add the JitPack repository to your build file
+**Step 1**.Add the JitPack repository to your build file
 
 Add it in your root build.gradle at the end of repositories:
 ```
