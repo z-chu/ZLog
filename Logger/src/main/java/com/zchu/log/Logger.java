@@ -2,6 +2,10 @@ package com.zchu.log;
 
 import android.util.Log;
 
+import org.json.JSONException;
+
+import javax.xml.transform.TransformerException;
+
 
 /**
  * Logger is a wrapper of {@link Log}
@@ -27,7 +31,6 @@ public final class Logger {
     public static Settings init() {
         return printer.init(DEFAULT_TAG);
     }
-
 
     /**
      * It is used to change the tag
@@ -55,87 +58,51 @@ public final class Logger {
         printer.d(message);
     }
 
-    public static void dJson(String json) {
-        printer.dJson(json);
-    }
-
     public static void e(Object message) {
         printer.e(message);
-    }
-
-    public static void eJson(String json) {
-        printer.eJson(json);
     }
 
     public static void e(Throwable throwable, Object message) {
         printer.e(throwable, message);
     }
 
-
     public static void i(Object message) {
         printer.i(message);
-    }
-
-    public static void iJson(String json) {
-        printer.iJson(json);
     }
 
     public static void v(Object message) {
         printer.v(message);
     }
 
-    public static void vJson(String json) {
-        printer.vJson(json);
-    }
-
     public static void w(Object message) {
         printer.w(message);
-    }
-
-    public static void wJson(String json) {
-        printer.wJson(json);
     }
 
     public static void a(Object message) {
         printer.a(message);
     }
 
-    public static void aJson(String json) {
-        printer.aJson(json);
+    public static String fJson(String json){
+      return fJson(json,4);
+    }
+
+    public static String fJson(String json, int indent){
+        try {
+            return  SystemUtil.jsonToMessage(json,indent);
+        } catch (JSONException e) {
+            return   Log.getStackTraceString(e) + "\n" + json;
+        }
+    }
+
+    public static String fXml(String xml){
+        try {
+            return  SystemUtil.xmlToMessage(xml);
+        } catch (TransformerException e) {
+           return  Log.getStackTraceString(e)+ "\n" + xml;
+        }
     }
 
 
-    public static void dXml(String xml) {
-        printer.dXml(xml);
-    }
 
-    public static void eXml(String xml) {
-        printer.eXml(xml);
-    }
-
-    public static void iXml(String xml) {
-        printer.iXml(xml);
-    }
-
-    public static void vXml(String xml) {
-        printer.vXml(xml);
-    }
-
-    public static void wXml(String xml) {
-        printer.wXml(xml);
-    }
-
-    public static void aXml(String xml) {
-        printer.aXml(xml);
-    }
-
-    /**
-     * @param message    信息
-     * @param prefixName 文件的前缀名 ,完整名称为:prefixName_time_versionName.txt
-     * @return 是否写入成功
-     */
-    public static boolean file(Object message, String prefixName) {
-        return printer.file(message, prefixName);
-    }
 
 }

@@ -1,7 +1,5 @@
 package com.zchu.log;
 
-import android.content.Context;
-
 /**
  * @author Orhan Obut
  */
@@ -11,10 +9,6 @@ public final class Settings {
     private int methodOffset = 0;
     private boolean showThreadInfo = true;
     private boolean smartTag = false;
-    private boolean fileIsShowLog = true;
-    private boolean fileIsShowTime = true;
-    private String fileDir = null;//文件存储目录
-    private Context fileWithContext = null;
     /**
      * Determines how logs will printed
      */
@@ -48,25 +42,6 @@ public final class Settings {
         return this;
     }
 
-    public Settings fileIsShowLog(boolean fileIsShowLog) {
-        this.fileIsShowLog = fileIsShowLog;
-        return this;
-    }
-
-    public Settings fileDir(String fileDir) {
-        this.fileDir = fileDir;
-        return this;
-    }
-
-    public Settings fileIsShowTime(boolean fileIsShowTime) {
-        this.fileIsShowTime = fileIsShowTime;
-        return this;
-    }
-
-    public Settings fileWithContext(Context fileWithContext) {
-        this.fileWithContext = fileWithContext;
-        return this;
-    }
 
     public int getMethodCount() {
         return methodCount;
@@ -88,19 +63,4 @@ public final class Settings {
         return smartTag;
     }
 
-    public Context getFileWithContext() {
-        return fileWithContext;
-    }
-
-    public String getFileDir() {
-        return fileDir;
-    }
-
-    public boolean isFileIsShowLog() {
-        return fileIsShowLog;
-    }
-
-    public boolean isFileIsShowTime() {
-        return fileIsShowTime;
-    }
 }

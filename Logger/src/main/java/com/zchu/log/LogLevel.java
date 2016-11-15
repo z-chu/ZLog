@@ -9,10 +9,7 @@ public enum LogLevel {
    * Prints all logs and Written all file
    */
   FULL,
-  /**
-   * Written to the file
-   */
-  FILE,
+
   ERROR,
 
   /**

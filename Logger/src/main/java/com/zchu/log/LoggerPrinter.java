@@ -1,25 +1,7 @@
 package com.zchu.log;
 
-import android.content.pm.PackageInfo;
-import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
-
-import com.zchu.log.util.SystemUtil;
-
-import org.json.JSONException;
-
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.StringReader;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import javax.xml.transform.TransformerException;
 
 /**
  * Logger is a wrapper of {@link Log}
@@ -37,11 +19,6 @@ final class LoggerPrinter implements Printer {
     private static final int CHUNK_SIZE = 4000;
 
     /**
-     * It is used for json pretty print
-     */
-    private static final int JSON_INDENT = 4;
-
-    /**
      * The minimum stack trace index, starts at this class after two native calls.
      */
     private static final int MIN_STACK_OFFSET = 3;
@@ -49,7 +26,7 @@ final class LoggerPrinter implements Printer {
     /**
      * It is used to determine log settings such as method count, thread info visibility
      */
-    private static final Settings settings = new Settings();
+    private  Settings settings = new Settings();
 
     /**
      * Drawing toolbox
@@ -110,29 +87,9 @@ final class LoggerPrinter implements Printer {
     }
 
     @Override
-    public void dJson(String json) {
-        try {
-            log(Log.DEBUG, SystemUtil.jsonToMessage(json, JSON_INDENT));
-        } catch (JSONException e) {
-            e(Log.getStackTraceString(e) + "\n" + json);
-        }
-    }
-
-    @Override
     public void e(Object message) {
         log(Log.ERROR, SystemUtil.objectToMessage(message));
-        // e(null, objectToMessage(message), args);
     }
-
-    @Override
-    public void eJson(String json) {
-        try {
-            log(Log.ERROR, SystemUtil.jsonToMessage(json, JSON_INDENT));
-        } catch (JSONException e) {
-            e( Log.getStackTraceString(e)+ "\n" + json);
-        }
-    }
-
 
     @Override
     public void e(Throwable throwable, Object message) {
@@ -141,7 +98,7 @@ final class LoggerPrinter implements Printer {
             msg += " : " + Log.getStackTraceString(throwable);
         }
         if (throwable != null && msg == null) {
-            msg = throwable.toString();
+            msg =  Log.getStackTraceString(throwable);
         }
         if (msg == null) {
             msg = "No message/exception is set";
@@ -155,26 +112,8 @@ final class LoggerPrinter implements Printer {
     }
 
     @Override
-    public void wJson(String json) {
-        try {
-            log(Log.WARN, SystemUtil.jsonToMessage(json, JSON_INDENT));
-        } catch (JSONException e) {
-            e(Log.getStackTraceString(e)+ "\n" + json);
-        }
-    }
-
-    @Override
     public void i(Object message) {
         log(Log.INFO, SystemUtil.objectToMessage(message));
-    }
-
-    @Override
-    public void iJson(String json) {
-        try {
-            log(Log.INFO, SystemUtil.jsonToMessage(json, JSON_INDENT));
-        } catch (JSONException e) {
-            e(Log.getStackTraceString(e) + "\n" + json);
-        }
     }
 
     @Override
@@ -183,169 +122,10 @@ final class LoggerPrinter implements Printer {
     }
 
     @Override
-    public void vJson(String json) {
-        try {
-            log(Log.VERBOSE, SystemUtil.jsonToMessage(json, JSON_INDENT));
-        } catch (JSONException e) {
-            e(Log.getStackTraceString(e) + "\n" + json);
-        }
-    }
-
-    @Override
     public void a(Object message) {
         log(Log.ASSERT, SystemUtil.objectToMessage(message));
     }
 
-    @Override
-    public void aJson(String json) {
-        try {
-            log(Log.ASSERT, SystemUtil.jsonToMessage(json, JSON_INDENT));
-        } catch (JSONException e) {
-            e(Log.getStackTraceString(e) + "\n" + json);
-        }
-    }
-
-    @Override
-    public void dXml(String xml) {
-        try {
-            log(Log.DEBUG, SystemUtil.xmlToMessage(xml));
-        } catch (TransformerException e) {
-            e(Log.getStackTraceString(e) + "\n" + xml);
-        }
-    }
-
-    @Override
-    public void eXml(String xml) {
-        try {
-            log(Log.ERROR, SystemUtil.xmlToMessage(xml));
-        } catch (TransformerException e) {
-            e(Log.getStackTraceString(e)+ "\n" + xml);
-        }
-    }
-
-    @Override
-    public void wXml(String xml) {
-        try {
-            log(Log.WARN, SystemUtil.xmlToMessage(xml));
-        } catch (TransformerException e) {
-            e(Log.getStackTraceString(e) + "\n" + xml);
-        }
-    }
-
-    @Override
-    public void iXml(String xml) {
-        try {
-            log(Log.INFO, SystemUtil.xmlToMessage(xml));
-        } catch (TransformerException e) {
-            e(Log.getStackTraceString(e)+ "\n" + xml);
-        }
-    }
-
-    @Override
-    public void vXml(String xml) {
-        try {
-            log(Log.VERBOSE, SystemUtil.xmlToMessage(xml));
-        } catch (TransformerException e) {
-            e(Log.getStackTraceString(e) + "\n" + xml);
-        }
-    }
-
-    @Override
-    public void aXml(String xml) {
-        try {
-            log(Log.ASSERT, SystemUtil.xmlToMessage(xml));
-        } catch (TransformerException e) {
-            e(Log.getStackTraceString(e) + "\n" + xml);
-        }
-    }
-
-    @Override
-    public boolean file(Object message, String prefixName) {
-        if (settings.isFileIsShowLog()) {
-            e(message);
-        }
-        return toFile(SystemUtil.objectToMessage(message), prefixName);
-    }
-
-    public boolean toFile(String message, String prefixName) {
-        if (settings.getLogLevel() == LogLevel.NONE) {
-            return false;
-        }
-        boolean flag = true;
-        PackageInfo pkg = null;
-        StringBuffer suffixName = new StringBuffer("ZLog"); //目录名
-        String versionName = "";
-        try {
-            pkg = settings.getFileWithContext().getPackageManager().getPackageInfo(settings.getFileWithContext().getPackageName(), 0);
-            suffixName.delete(0, suffixName.length());
-            suffixName.append(pkg.applicationInfo.loadLabel(settings.getFileWithContext().getPackageManager()));
-            versionName = "_" + pkg.versionName;
-            suffixName.append(versionName);
-            suffixName.append("_");
-            suffixName.append(pkg.versionCode);
-        } catch (Exception e) {
-        }
-        //    String fileName = suffixName.toString();
-        String dirFilePath = null;
-        if (settings.getFileDir() == null) {
-            dirFilePath = Environment.getExternalStorageDirectory().getPath() + "/" + suffixName.toString();
-        } else {
-            dirFilePath = settings.getFileDir();
-        }
-
-        File dirfile = new File(dirFilePath);
-        if (!dirfile.exists()) {
-            // 如果目录不存在则创建该目录
-            if(!dirfile.mkdir()){
-                e("Failed to create the directory :"+dirFilePath+", please custom path");
-                return false;
-            }
-        }
-        StringBuffer str = new StringBuffer("");
-        if (settings.isFileIsShowTime()) {
-            SimpleDateFormat formatter = new SimpleDateFormat("MM月dd日HH时mm分ss秒");
-            Date curDate = new Date(System.currentTimeMillis());// 获取当前时间
-            str.append("_" + formatter.format(curDate));
-        }
-        File tofile = new File(dirFilePath + "/"
-                + prefixName + str + versionName + ".txt");
-        if (!tofile.getParentFile().exists()) {
-            tofile.getParentFile().mkdirs();
-        }
-        BufferedReader bufferedReader = null;
-        BufferedWriter bufferedWriter = null;
-        try {
-
-            bufferedReader = new BufferedReader(new StringReader(message));
-            bufferedWriter = new BufferedWriter(new FileWriter(tofile));
-            char buf[] = new char[1024]; // 字符缓冲区
-            int len;
-            while ((len = bufferedReader.read(buf)) != -1) {
-                bufferedWriter.write(buf, 0, len);
-            }
-            bufferedWriter.flush();
-            bufferedReader.close();
-            bufferedWriter.close();
-            e("Exception to file succeed ----->" + tofile);
-        }
-        catch (FileNotFoundException e){
-            e(e,"Write failed");
-            return false;
-        }catch (IOException e) {
-            e(e, "Exception to file fail --/-->" + tofile);
-            return false;
-        } finally {
-            if (bufferedReader != null) {
-                try {
-                    bufferedReader.close();
-                } catch (IOException e) {
-                    e(e);
-                }
-            }
-
-        }
-        return flag;
-    }
 
     /**
      * This method is synchronized in order to avoid messy of logs' order.

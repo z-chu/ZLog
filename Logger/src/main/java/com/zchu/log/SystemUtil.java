@@ -1,4 +1,4 @@
-package com.zchu.log.util;
+package com.zchu.log;
 
 import android.text.TextUtils;
 import android.util.Log;
@@ -29,15 +29,7 @@ import javax.xml.transform.stream.StreamSource;
  *
  * @see "https://github.com/pengwei1024/LogUtils"
  */
-public class SystemUtil {
-
-    /**
-     * 获取StackTraceElement对象
-     */
-    public static StackTraceElement getStackTrace() {
-        return Thread.currentThread().getStackTrace()[4];
-    }
-
+class SystemUtil {
 
     // 基本数据类型
     private final static String[] types = {"int", "java.lang.String", "boolean", "char",
@@ -46,7 +38,7 @@ public class SystemUtil {
     /**
      * 将对象转化为String
      */
-    public static <T> String objectToString(T object) {
+    static <T> String objectToString(T object) {
         if (object == null) {
             return "Object{object is null}";
         }
@@ -81,7 +73,7 @@ public class SystemUtil {
         }
     }
 
-    public static String jsonToMessage(String json, int indent) throws JSONException {
+    static String jsonToMessage(String json, int indent) throws JSONException {
         if (TextUtils.isEmpty(json)) {
             return "Empty/Null json content";
         }
@@ -102,7 +94,7 @@ public class SystemUtil {
     /**
      * 判断起始字符是否相同，排除空格
      */
-    public static boolean startsWith(String json, char c) {
+    private static boolean startsWith(String json, char c) {
         for (int i = 0; i < json.length(); i++) {
             char star = json.charAt(i);
             if (star == c) {
@@ -115,7 +107,7 @@ public class SystemUtil {
     }
 
 
-    public static String xmlToMessage(String xml) throws TransformerException {
+    static String xmlToMessage(String xml) throws TransformerException {
         if (TextUtils.isEmpty(xml)) {
             return "Empty/Null xml content";
         }
@@ -134,7 +126,7 @@ public class SystemUtil {
      *
      * @see "https://github.com/pengwei1024/LogUtils"
      */
-    public static String objectToMessage(Object object) {
+    static String objectToMessage(Object object) {
         if (object != null) {
             if (object instanceof String) {
                 return (String) object;
@@ -191,7 +183,7 @@ public class SystemUtil {
                 return SystemUtil.objectToString(object);
             }
         } else {
-            return null;
+            return "null";
         }
     }
 
