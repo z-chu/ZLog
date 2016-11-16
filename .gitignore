@@ -6,3 +6,4 @@
 /Logger/*.iml
 /example/*.iml
 /example
+/logger-no-op/*.pro
