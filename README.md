@@ -27,7 +27,8 @@ allprojects {
 
 ```
 dependencies {
-	compile 'com.github.z-chu:ZLog:2.0'
+	debugCompile 'com.github.z-chu:ZLog:2.0'
+	releaseCompile 'com.github.z-chu:ZLog:no-op-2.0'
 }
 ```
 
