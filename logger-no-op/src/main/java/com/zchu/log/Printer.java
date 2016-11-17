@@ -3,7 +3,7 @@ package com.zchu.log;
 /**
  * @author Orhan Obut
  */
- interface Printer {
+ public interface Printer {
 
     Printer t(String tag, int methodCount);
 
