@@ -9,7 +9,8 @@
 为什么有这个项目：
 
 1. 因为Logger的json、xml打印只有debug级别的，但有的手机压根就不打印debug日志，所以为了解决这个问题：
-新增`Logger.fJson(String json)`和`Logger.fXml(String xml)`方法，方法只做字符的格式化，去掉了`Logger.json()`和`Logger.xml()`方法。
+
+	新增`Logger.fJson(String json)`和`Logger.fXml(String xml)`方法，方法只做字符的格式化，去掉了`Logger.json()`和`Logger.xml()`方法。
 
 2. 使用起来更加简单，只需要调用`Logger.d(Object message)`即可打印任何对象的信息，比如：ArrayList、String、值类型、有get、set的普通类对象。
 
@@ -34,7 +35,7 @@ dependencies {
 }
 ```
 
-##License
+## License
 
 ```
 Copyright 2015, 2016 ZhaoChengZhu
