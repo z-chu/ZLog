@@ -36,6 +36,7 @@ public final class Logger {
      * It is used to change the tag
      *
      * @param tag is the given string which will be used in Logger
+     * @return the settings object
      */
     public static Settings init(String tag) {
         return printer.init(tag);

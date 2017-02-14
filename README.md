@@ -17,38 +17,13 @@
 3. 去掉一些几乎不会用功能和函数（如：可变长度参数、没有用的Array操作函数）
 
 ### Integration
-**Step 1**.Add the JitPack repository to your build file
-
-Add it in your root build.gradle at the end of repositories:
-```
-allprojects {
-    repositories {
-        maven { url "https://jitpack.io" }
-    }
-}
-```
-**Step 2**. Add the dependency
+Add the following into your gradle file:
 
 ```
 dependencies {
-	compile 'com.github.z-chu:ZLog:2.0'
+	debugCompile 'com.zchu:zlog:1.0.0'
+	testCompile 'com.zchu:zlog:1.0.0'
+	releaseCompile 'com.zchu:zlog-no-op:1.0.0'//正式发布时将所有的打印方法替换为空方法
 }
 ```
 
-## License
-
-```
-Copyright 2015, 2016 ZhaoChengZhu
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-   http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-```
