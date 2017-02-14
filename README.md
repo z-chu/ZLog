@@ -23,7 +23,7 @@ Add the following into your gradle file:
 dependencies {
 	debugCompile 'com.zchu:zlog:1.0.0'
 	testCompile 'com.zchu:zlog:1.0.0'
-	releaseCompile 'com.zchu:zlog-no-op:1.0.0'//正式发布时将所有的打印方法替换为空方法
+	releaseCompile 'com.zchu:zlog-no-op:1.0.0'//正式发布时会将所有的打印方法替换为空方法
 }
 ```
 
