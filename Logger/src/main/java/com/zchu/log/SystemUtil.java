@@ -131,7 +131,8 @@ class SystemUtil {
             if (object instanceof String) {
                 return (String) object;
             } else if (object instanceof Throwable) {
-                return Log.getStackTraceString((Throwable) object);
+                String throwableMessage = Log.getStackTraceString((Throwable) object);
+                return throwableMessage.length()>0?throwableMessage:((Throwable) object).getMessage();
             }
             final String simpleName = object.getClass().getSimpleName();
             if (object.getClass().isArray()) {
